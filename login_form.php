@@ -50,6 +50,7 @@ session_destroy();
 </p>
     </form>
     <a href="signup_form.php">新規登録はこちら</a>
+    <a href="index.php">戻る</a>
 </body>
 
 </html>
