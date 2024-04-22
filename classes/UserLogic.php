@@ -9,16 +9,19 @@ class UserLogic
      * @param array $userData
      * @return bool $result
      */
-    public static function createUser($userData)
+    public static function createUser($userData, $filename, $save_path)
     {
         $result = false;
-        $sql = 'INSERT INTO users (name, email, password) VALUES (?, ?, ?)';
+        $sql = 'INSERT INTO users (name, email, password, file_name, file_path) VALUES (?, ?, ?, ?, ?)';
 
+        // $filename, $save_path
         //ユーザーデータを配列に入れる
         $arr = [];
         $arr[] = $userData['username'];
         $arr[] = $userData['email'];
         $arr[] = password_hash($userData['password'], PASSWORD_DEFAULT);
+        $arr[] = $filename;
+        $arr[] = $save_path;
         try {
             $stmt = connect()->prepare($sql);
             $result =  $stmt->execute($arr);

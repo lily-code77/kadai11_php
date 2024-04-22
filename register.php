@@ -1,6 +1,8 @@
 <?php
 session_start();
 require_once './classes/UserLogic.php';
+require_once './functions.php';
+// require_once './dbconnect.php';
 
 // エラーメッセージ
 $err = [];
@@ -30,9 +32,64 @@ if ($password !== $password_conf) {
     $err[] = '確認用パスワードと異なっています。';
 }
 
+// ファイル関連の取得
+$file          = $_FILES['img'];
+$filename      = basename($file['name']);
+$tmp_path      = $file['tmp_name'];
+$file_err      = $file['error'];
+$filesize      = $file['size'];
+// $upload_dir    = '/Applications/XAMPP/xamppfiles/htdocs/gs/kadai08_db1/public/images/';
+$upload_dir    = 'profile_images/';
+$save_filename = date('YmdHis') . $filename;
+$err_msgs      = array();
+$save_path     = $upload_dir . $save_filename;
+
+    // ファイルのバリデーション
+    // ファイルのサイズが1MG未満か
+    if ($filesize > 1048576 || $file_err == 2) {
+        array_push($err_msgs, 'ファイルサイズは1MB未満にしてください。');
+    }
+
+    // 拡張は画像形式か
+    $allow_ext = array('jpg', 'jpeg', 'png');
+    $file_ext = pathinfo($filename, PATHINFO_EXTENSION);
+
+    if (!in_array(strtolower($file_ext), $allow_ext)) {
+        array_push($err_msgs, '画像ファイルを添付してください。');
+    }
+
+    if (count($err_msgs) === 0) {
+        // ファイルはあるかどうか？
+        if (is_uploaded_file($tmp_path)) {
+            if (move_uploaded_file($tmp_path, $save_path)) {
+                echo $filename . 'を' . $upload_dir . 'をアップしました。';
+                //DBに保存（ファイル名、ファイルパス、キャプション）
+                // $result = fileSave($login_user, $recipe_name, $filename, $save_path, $ingredients, $instructions, $episode);
+
+                // if ($result) {
+                //     echo 'データベースに保存しました！';
+                // } else {
+                //     echo 'データベースへの保存が失敗しました！';
+                // }
+            } else {
+                echo 'ファイルが保存できませんでした。';
+            }
+        } else {
+            echo 'ファイルが選択されていません。';
+            echo '<br>';
+        }
+    } else {
+        foreach ($err_msgs as $msg) {
+            echo $msg;
+            echo '<br>';
+        }
+    }
+
+
 if (count($err) === 0) {
     // ユーザーを登録する処理
-    $hasCreated = UserLogic::createUser($_POST);
+    // var_dump($_POST);
+    $hasCreated = UserLogic::createUser($_POST, $filename, $save_path);
 
     if (!$hasCreated) {
         $err[] = '登録に失敗しました';

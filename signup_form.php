@@ -28,7 +28,7 @@ unset($_SESSION['login_err']);
     <?php if (isset($login_err)) : ?>
         <p><?php echo $login_err; ?></p>
     <?php endif; ?>
-    <form action="register.php" method="POST">
+    <form action="register.php" method="POST" enctype="multipart/form-data">
         <p>
             <label for="username">ユーザ名:</label>
             <input type="text" name="username">
@@ -48,7 +48,7 @@ unset($_SESSION['login_err']);
         <p>
             写真(.png、.jpg、.gifのみ対応)：<br>
             <input type="hidden" name="MAX_FILE_SIZE" value="1048576" />
-            <input type="file" name="img" accept="profile_image/*"><br>
+            <input type="file" name="img" accept="profile_images/*"><br>
         </p>
         <input type="hidden" name="csrf_token" value="<?php echo h(setToken()); ?>">
         <p>
