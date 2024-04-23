@@ -3,6 +3,7 @@ session_start();
 
 require_once './classes/UserLogic.php';
 require_once './functions.php';
+require_once './dbconnect.php';
 
 // ログインしているか判定し、していなかったら新規登録画面へ返す
 $result = UserLogic::checkLogin();
@@ -14,6 +15,27 @@ if (!$result) {
 }
 
 $login_user = $_SESSION['login_user'];
+
+// $files = getAllFile();
+
+// foreach($files as $file) {
+//     var_dump($file);
+// }
+
+$pdo = connect();
+
+$sql = "SELECT * FROM recipes";
+$stmt = $pdo->prepare($sql);
+$status = $stmt->execute();
+
+if ($status == false) {
+    sql_error($stmt);
+}
+
+$recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// JSONに値を渡す
+$json = json_encode($recipes, JSON_UNESCAPED_UNICODE);
 ?>
 
 <!DOCTYPE html>
@@ -49,7 +71,14 @@ $login_user = $_SESSION['login_user'];
         <ul class="unfinishedItem"></ul>
     </div>
 
+    <script>
+        // JSON受け取り
+        $received_json = '<?=$json?>';
+        const obj = JSON.parse($received_json);
+        console.log(obj);
 
+
+    </script>
 
 </body>
 
