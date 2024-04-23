@@ -14,7 +14,7 @@
         <header id="header">
             <div class="inner wrapper">
                 <h1 class="logo">
-                    <a href="index.html"><img src="./hp_img/logo.png" alt="紡くっくのロゴ"></a>
+                    <a href="index.php"><img src="./hp_img/logo.png" alt="紡くっくのロゴ"></a>
                 </h1>
                 <nav>
                     <ul>
