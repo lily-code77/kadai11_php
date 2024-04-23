@@ -16,12 +16,6 @@ if (!$result) {
 
 $login_user = $_SESSION['login_user'];
 
-// $files = getAllFile();
-
-// foreach($files as $file) {
-//     var_dump($file);
-// }
-
 $pdo = connect();
 
 $sql = "SELECT * FROM recipes";
@@ -46,6 +40,9 @@ $json = json_encode($recipes, JSON_UNESCAPED_UNICODE);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/producer_top.css">
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <title>紡くっく人 | トップページ</title>
 </head>
 
@@ -73,11 +70,51 @@ $json = json_encode($recipes, JSON_UNESCAPED_UNICODE);
 
     <script>
         // JSON受け取り
-        $received_json = '<?=$json?>';
-        const obj = JSON.parse($received_json);
-        console.log(obj);
+        $received_json = '<?= $json ?>';
+        const recipeArr = JSON.parse($received_json);
+        console.log(recipeArr);
+        console.log(recipeArr.length);
 
+        for (let i = 0; i < recipeArr.length; i++) {
+            const output =
+                '<li class="list">' +
+                '<p class="img">' +
+                '<img src="' + recipeArr[i]['file_path'] + '" width="300px">' +
+                '<details>' +
+                '<summary class="title">' +
+                recipeArr[i]['recipe_name'] +
+                '<br>' +
+                recipeArr[i]['genre'] +
+                '<br>' +
+                recipeArr[i]['preference'] +
+                '<br>' +
+                "調理時間：" +
+                recipeArr[i]['cooking_time'] +
+                '</summary>' +
+                '<p class="ing">' +
+                "材料：" +
+                recipeArr[i]['ing'] +
+                '</p>' +
+                '<p class="ins">' +
+                "作り方：" +
+                recipeArr[i]['ins'] +
+                '</p>' +
+                '<p class="memo">' +
+                "レシピ背景：" +
+                recipeArr[i]['episode'] +
+                '</p>' +
+                '</details>' +
+                '<p class="keywords">' +
+                recipeArr[i]['keywords'] +
+                '</p>' +
+                '</li>';
 
+            if (recipeArr[i]['done'] === "yes") {
+                $('.item').append(output);
+            } else {
+                $('.unfinishedItem').append(output);
+            }
+        }
     </script>
 
 </body>
