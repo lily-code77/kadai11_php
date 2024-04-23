@@ -40,7 +40,6 @@ $login_user = $_SESSION['login_user'];
     <h2>マイレシピ登録</h2>
     <form action="recipe_upload.php" method="post" enctype="multipart/form-data">
         <div class="content">
-            <input type="hidden" name="user_id" value="$login_user['id']" />
             料理名：<br><input type="text" name="recipe_name" class="input"><br>
             ジャンル：<br><select name="genre">
                 <option value="">選択しない</option>
@@ -62,7 +61,7 @@ $login_user = $_SESSION['login_user'];
             </select><br>
             写真(.png、.jpg、.gifのみ対応)：<br>
             <input type="hidden" name="MAX_FILE_SIZE" value="1048576" />
-            <input type="file" name="img" accept="image/*"><br>
+            <input type="file" name="img" accept="recipe_images/*"><br>
             調理時間：<br><select name="time">
                 <option value="">選択しない</option>
                 <option value="5分">5分</option>
@@ -76,7 +75,7 @@ $login_user = $_SESSION['login_user'];
             材料：<br><textarea name="ingredients" class="input big" cols="70" rows="10"></textarea><br>
             作り方：<br><textarea name="instructions" class="input big" cols="70" rows="10"></textarea><br>
             レシピのエピソード：<br><textarea name="episode" id="textarea" cols="70" rows="10"></textarea><br>
-            キーワード(例：#元気が出る)：<br><textarea name="episode" id="textarea" cols="50"></textarea><br>
+            キーワード(例：#元気が出る)：<br><textarea name="keywords" id="textarea" cols="50"></textarea><br>
             完成：<input type="radio" name="yesNo" value="yes">YES<input type="radio" name="yesNo" value="no">NO<br>
         </div>
         <button class="b" type="submit">作成</button>

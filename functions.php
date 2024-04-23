@@ -41,21 +41,29 @@ function setToken()
  * @param string $episode レシピのエピソード
  * @return bool $result
  */
-function fileSave($login_user, $recipe_name, $filename, $save_path, $ingredients, $instructions, $episode)
+function fileSave($dataArr, $filename, $save_path)
 {
     $result = False;
 
-    $sql = "INSERT INTO recipe_registration (user_id, recipe_name, file_name, file_path, ingredients, instructions, episode) VALUE (?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO recipes 
+    (user_id, genre, preference, recipe_name, file_name, file_path, cooking_time, ing, ins, 
+    episode, keywords, done) 
+    VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     try {
         $stmt = connect()->prepare($sql);
-        $stmt->bindValue(1, $login_user);
-        $stmt->bindValue(2, $recipe_name);
-        $stmt->bindValue(3, $filename);
-        $stmt->bindValue(4, $save_path);
-        $stmt->bindValue(5, $ingredients);
-        $stmt->bindValue(6, $instructions);
-        $stmt->bindValue(7, $episode);
+        $stmt->bindValue(1, $dataArr['login_user']);
+        $stmt->bindValue(2, $dataArr['genre']);
+        $stmt->bindValue(3, $dataArr['preference']);
+        $stmt->bindValue(4, $dataArr['recipe_name']);
+        $stmt->bindValue(5, $filename);
+        $stmt->bindValue(6, $save_path);
+        $stmt->bindValue(7, $dataArr['time']);
+        $stmt->bindValue(8, $dataArr['ingredients']);
+        $stmt->bindValue(9, $dataArr['instructions']);
+        $stmt->bindValue(10, $dataArr['episode']);
+        $stmt->bindValue(11, $dataArr['keywords']);
+        $stmt->bindValue(12, $dataArr['yesNo']);
         $result = $stmt->execute();
         return $result;
     } catch (\Exception $e) {
@@ -70,7 +78,7 @@ function fileSave($login_user, $recipe_name, $filename, $save_path, $ingredients
  */
 function getAllFile()
 {
-    $sql = "SELECT * FROM recipe_registration";
+    $sql = "SELECT * FROM recipes";
 
     $fileData = connect()->query($sql);
 
