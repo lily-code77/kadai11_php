@@ -3,7 +3,6 @@ session_start();
 
 require_once './classes/UserLogic.php';
 
-
 // エラーメッセージ
 $err = [];
 
@@ -31,4 +30,33 @@ if (!$result) {
     return;
 }
 
-header("Location: top.php");
+$login_id = $_SESSION['login_user']['id'];
+$login_user = $_SESSION['login_user']['name'];
+// var_dump($_SESSION);
+// var_dump($login_id);
+
+// ユーザーのadmin_flgの確認
+$pdo = connect();
+
+$sql = "SELECT id, admin_flg FROM users";
+$stmt = $pdo->prepare($sql);
+$status = $stmt->execute();
+
+if ($status == false) {
+    sql_error($stmt);
+}
+
+$admin_flgs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+foreach($admin_flgs as $admin_flg) {
+    if ($login_id == $admin_flg['id']) {
+        if ($admin_flg['admin_flg'] == 1) {
+            header("Location: admin_top.php");
+        } else if ($admin_flg['admin_flg'] == 2) {
+            header("Location: producer_top.php");
+        } else {
+            header("Location: general_top.php");
+        }
+    }
+}
+
