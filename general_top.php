@@ -29,19 +29,23 @@ if ($status == false) {
 $partners_id = $stmt->fetchAll(PDO::FETCH_ASSOC);
 var_dump($partners_id);
 
+$partners_idArr = array();
+foreach ($partners_id as $partner_id) {
+    array_push($partners_idArr, $partner_id["profile_id"]);
+}
+// var_dump($partners_idArr);
+
 // パートナーのfile_pathをusersテーブルから引っ張ってくる
-// $inClause = substr(str_repeat(',?'. count($partners_id['profile_id'])), 1);
+$sql = "SELECT id, file_path FROM users WHERE id IN (" . implode(",", $partners_idArr) . ");";
+$stmt = $pdo->prepare($sql);
+$status = $stmt->execute();
 
-// $sql = "SELECT id, file_path FROM users WHERE id IN $inClause";
-// $stmt = $pdo->prepare($sql);
-// $status = $stmt->execute();
+if ($status == false) {
+    sql_error($stmt);
+}
 
-// if ($status == false) {
-//     sql_error($stmt);
-// }
-
-// $partner_photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+$partner_photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+var_dump($partner_photos);
 ?>
 
 <!DOCTYPE html>
@@ -59,7 +63,11 @@ var_dump($partners_id);
 
     <h2>あなたの食卓パートナー</h2>
     <!-- パートナーの写真を表示 ＋　削除機能-->
-    <div class="selected_partner"></div>
+    <div class="selected_partner">
+        <?php foreach ($partner_photos as $partner_photo) { ?>
+            <img src="<?php echo "{$partner_photo['file_path']}"; ?>" alt="パートナーのアイコン">
+        <?php } ?>
+    </div>
 
     <h2>食卓パートナー検索</h2>
     <div class="pSearch">
@@ -133,6 +141,7 @@ var_dump($partners_id);
                     </label>
                 </div>
             </div>
+            <input type="submit" name="submit" value="検索" id="search">
         </form>
     </section>
 
