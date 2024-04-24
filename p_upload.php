@@ -29,17 +29,15 @@ try {
     $stmt->bindValue(3, $dataArr['keywords']);
     $stmt->bindValue(4, $dataArr['pr']);
     $result = $stmt->execute();
-    return $result;
 } catch (\Exception $e) {
     echo $e->getMessage();
-    return $result;
 }
 
-// if ($result === FALSE) {
-//     echo 'データベースへの保存が失敗しました！';
-// } else {
-//     echo 'データベースに保存しました！';
-// }
+if ($result === FALSE) {
+    echo 'データベースへの保存が失敗しました！';
+} else {
+    echo 'データベースに保存しました！';
+}
 
 header("Location: producer_top.php");
 ?>
