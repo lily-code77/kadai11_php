@@ -41,7 +41,8 @@ $login_user = $_SESSION['login_user'];
             <div class="mainSearch">
                 <label for="word">
                     <div class="label-title">
-                        <input type="radio" name="from" value="partner">パートナーのレシピから<input type="radio" name="from" value="plusB">パートナー＋ブックマークのレシピから<input type="radio" name="from" value="all">全てのレシピから<br>
+                        <p>下記、選択がない場合は全てのレシピから検索されます。</p>
+                        <input type="radio" name="from" value="partner">パートナーのレシピから<input type="radio" name="from" value="plusB">パートナー＋ブックマークのレシピから<br>
                     </div>
                     <input type="text" name="word" value="" placeholder="材料 × ジャンル × 調理時間 × キーワード">
                 </label>
