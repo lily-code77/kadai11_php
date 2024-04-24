@@ -54,7 +54,7 @@ $json = json_encode($recipes, JSON_UNESCAPED_UNICODE);
     <p>You are：<?php echo h($login_user['name']) ?></p>
     <ul>
         <li><a href="recipe_registration.php">レシピを登録する</a></li>
-        <li>教室の管理</li>
+        <li>記事を投稿する</li>
         <li>ECサイト</li>
     </ul>
 
