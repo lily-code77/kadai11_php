@@ -16,6 +16,32 @@ if (!$result) {
 
 $login_user = $_SESSION['login_user'];
 
+$pdo = connect();
+// パートナーのprofile_idを引っ張ってくる
+$sql = "SELECT profile_id FROM partners WHERE user_id=$login_user[id]";
+$stmt = $pdo->prepare($sql);
+$status = $stmt->execute();
+
+if ($status == false) {
+    sql_error($stmt);
+}
+
+$partners_id = $stmt->fetchAll(PDO::FETCH_ASSOC);
+var_dump($partners_id);
+
+// パートナーのfile_pathをusersテーブルから引っ張ってくる
+// $inClause = substr(str_repeat(',?'. count($partners_id['profile_id'])), 1);
+
+// $sql = "SELECT id, file_path FROM users WHERE id IN $inClause";
+// $stmt = $pdo->prepare($sql);
+// $status = $stmt->execute();
+
+// if ($status == false) {
+//     sql_error($stmt);
+// }
+
+// $partner_photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +58,7 @@ $login_user = $_SESSION['login_user'];
     <p>You are：<?php echo h($login_user['name']) ?></p>
 
     <h2>あなたの食卓パートナー</h2>
-    <!-- パートナーの写真を表示 -->
+    <!-- パートナーの写真を表示 ＋　削除機能-->
     <div class="selected_partner"></div>
 
     <h2>食卓パートナー検索</h2>
