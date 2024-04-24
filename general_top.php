@@ -36,13 +36,14 @@ $login_user = $_SESSION['login_user'];
     <div class="selected_partner"></div>
 
     <h2>食卓パートナー検索</h2>
-    <form method="post" action="p_serchbox.php">
-        <div class="pSearch">
+    <div class="pSearch">
+        <form method="post" action="partner_searchbox.php">
             <label for="pWord">
                 <input type="text" name="pWord" value="" placeholder="食卓パートナー名 / キーワード">
             </label>
-        </div>
-    </form>
+            <input type="submit" name="submit" value="検索" id="search">
+        </form>
+    </div>
 
     <h2>レシピ検索</h2>
     <section id="searchbox">

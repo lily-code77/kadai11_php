@@ -4,8 +4,14 @@ session_start();
 require_once './classes/UserLogic.php';
 
 $result = UserLogic::checkLogin();
-if ($result) {
-    header('Location: top.php');
+
+// if ($result) {
+//     header('Location: top.php');
+//     return;
+// }
+
+if (!$result) {
+    header('Location: signup_form.php');
     return;
 }
 
