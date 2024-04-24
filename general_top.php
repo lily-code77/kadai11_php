@@ -33,17 +33,26 @@ $login_user = $_SESSION['login_user'];
 
     <h2>あなたの食卓パートナー</h2>
     <!-- パートナーの写真を表示 -->
-    <div class="partner"></div>
+    <div class="selected_partner"></div>
+
+    <h2>食卓パートナー検索</h2>
+    <form method="post" action="p_serchbox.php">
+        <div class="pSearch">
+            <label for="pWord">
+                <input type="text" name="pWord" value="" placeholder="食卓パートナー名 / キーワード">
+            </label>
+        </div>
+    </form>
 
     <h2>レシピ検索</h2>
     <section id="searchbox">
         <form method="post" action="searchbox.php">
+            <div class="label-title">
+                <p>下記、選択がない場合は全てのレシピから検索されます。</p>
+                <input type="radio" name="from" value="partner">パートナーのレシピから<input type="radio" name="from" value="plusB">パートナー＋ブックマークのレシピから<br>
+            </div>
             <div class="mainSearch">
                 <label for="word">
-                    <div class="label-title">
-                        <p>下記、選択がない場合は全てのレシピから検索されます。</p>
-                        <input type="radio" name="from" value="partner">パートナーのレシピから<input type="radio" name="from" value="plusB">パートナー＋ブックマークのレシピから<br>
-                    </div>
                     <input type="text" name="word" value="" placeholder="材料 × ジャンル × 調理時間 × キーワード">
                 </label>
             </div>
