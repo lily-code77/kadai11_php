@@ -15,6 +15,7 @@ if (!$result) {
 }
 
 $login_user = $_SESSION['login_user'];
+// var_dump($login_user);
 
 $pdo = connect();
 
@@ -27,9 +28,17 @@ if ($status == false) {
 }
 
 $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// var_dump($recipes);
+
+$user_recipes = array();
+foreach($recipes as $recipe) {
+    if ($recipe['user_id'] == $login_user['id']) {
+        array_push($user_recipes, $recipe);
+    }
+}
 
 // JSONに値を渡す
-$json = json_encode($recipes, JSON_UNESCAPED_UNICODE);
+$json = json_encode($user_recipes, JSON_UNESCAPED_UNICODE);
 ?>
 
 <!DOCTYPE html>

@@ -58,7 +58,7 @@ function fileSave($dataArr, $filename, $save_path)
         $stmt->bindValue(4, $dataArr['recipe_name']);
         $stmt->bindValue(5, $filename);
         $stmt->bindValue(6, $save_path);
-        $stmt->bindValue(7, $dataArr['time']);
+        $stmt->bindValue(7, $dataArr['cooking_time']);
         $stmt->bindValue(8, $dataArr['ingredients']);
         $stmt->bindValue(9, $dataArr['instructions']);
         $stmt->bindValue(10, $dataArr['episode']);
