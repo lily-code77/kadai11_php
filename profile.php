@@ -65,6 +65,8 @@ $p_photo = $stmt->fetch(PDO::FETCH_ASSOC);
             <li><?php echo "{$profile['pr']}"; ?></li>
         </ul>
     </div>
+
+    <a href="./producer_top.php">戻る</a>
 </body>
 
 </html>

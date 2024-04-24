@@ -43,7 +43,6 @@ $login_user = $_SESSION['login_user'];
         </div>
         <button class="b" type="submit">作成</button>
     </form>
-
 </body>
 
 </html>
