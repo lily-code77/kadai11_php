@@ -10,7 +10,7 @@ $result = UserLogic::checkLogin();
 //     return;
 // }
 
-if (!$result) {
+if ($result) {
     header('Location: signup_form.php');
     return;
 }
