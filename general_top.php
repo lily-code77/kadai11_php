@@ -27,7 +27,7 @@ if ($status == false) {
 }
 
 $partners_id = $stmt->fetchAll(PDO::FETCH_ASSOC);
-var_dump($partners_id);
+// var_dump($partners_id);
 
 $partners_idArr = array();
 foreach ($partners_id as $partner_id) {
@@ -45,7 +45,19 @@ if ($status == false) {
 }
 
 $partner_photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-var_dump($partner_photos);
+// var_dump($partner_photos);
+
+// パートナーのnameとkeywordsをprofilesテーブルから引っ張ってくる
+$sql = "SELECT user_id, name, keywords FROM profiles WHERE user_id IN (" . implode(",", $partners_idArr) . ");";
+$stmt = $pdo->prepare($sql);
+$status = $stmt->execute();
+
+if ($status == false) {
+    sql_error($stmt);
+}
+
+$partner_descripts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// var_dump($partner_descripts);
 ?>
 
 <!DOCTYPE html>
@@ -64,8 +76,15 @@ var_dump($partner_photos);
     <h2>あなたの食卓パートナー</h2>
     <!-- パートナーの写真を表示 ＋　削除機能-->
     <div class="selected_partner">
-        <?php foreach ($partner_photos as $partner_photo) { ?>
-            <img src="<?php echo "{$partner_photo['file_path']}"; ?>" alt="パートナーのアイコン">
+        <?php foreach ($partner_descripts as $partner_descript) { ?>
+            <?php foreach ($partner_photos as $partner_photo) { ?>
+                <?php if ($partner_descript['user_id'] == $partner_photo['id']) : ?>
+                    <img src="<?php echo "{$partner_photo['file_path']}"; ?>" alt="パートナーのアイコン">
+                <?php endif; ?>
+            <?php } ?>
+
+            <p><?php echo "{$partner_descript['name']}" ?></p>
+            <p><?php echo "{$partner_descript['keywords']}" ?></p>
         <?php } ?>
     </div>
 

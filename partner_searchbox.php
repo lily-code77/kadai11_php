@@ -87,7 +87,7 @@ $p_photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <p><?php echo "{$producer['keywords']}"; ?></p>
             <p><?php echo "{$producer['pr']}"; ?></p>
             <form method="post" action="partners_upload.php">
-                <input type="radio" name="selected" value=<?= $producer['id'] ?>>選択
+                <input type="radio" name="selected" value=<?= $producer['user_id'] ?>>選択
                 <input type="submit" name="submit" value="確定" id="search">
             </form>
         <?php } ?>
