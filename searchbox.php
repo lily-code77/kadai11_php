@@ -43,19 +43,19 @@ $sql = "SELECT * FROM recipes
         OR ing LIKE :word2
         OR episode LIKE :word3
         OR keywords LIKE :word4
-        OR genre LIKE :genre
-        OR preference LIKE :preference
-        OR cooking_time LIKE :cooking_time";
+        AND genre=:genre
+        AND preference=:preference
+        AND cooking_time=:cooking_time";
 
 $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':word', '%' . $word . '%', PDO::PARAM_STR);
 $stmt->bindValue(':word2', '%' . $word . '%', PDO::PARAM_STR);
 $stmt->bindValue(':word3', '%' . $word . '%', PDO::PARAM_STR);
 $stmt->bindValue(':word4', '%' . $word . '%', PDO::PARAM_STR);
-// ジャンルを「ごはん」で検索すると「ごはんのお供や保存食」も引っ張って来てしまう。
 $stmt->bindValue(':genre', $genre, PDO::PARAM_STR);
 $stmt->bindValue(':preference', $preference, PDO::PARAM_STR);
 $stmt->bindValue(':cooking_time', $time, PDO::PARAM_STR);
+
 $status = $stmt->execute();
 
 if ($status == false) {
@@ -65,6 +65,17 @@ if ($status == false) {
 // 全データ取得
 $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // var_dump($recipes);
+
+// partnerのprofile_id(=user_id partnerテーブルでprofile_idと命名したのが誤解を招いてしまっている)を引っ張ってくる
+$sql = "SELECT profile_id FROM partners WHERE user_id=$login_user[id]";
+$stmt = $pdo->prepare($sql);
+$status = $stmt->execute();
+
+if ($status == false) {
+    sql_error($stmt);
+}
+
+$partners_id = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 

@@ -103,7 +103,7 @@ $partner_descripts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <form method="post" action="searchbox.php">
             <div class="label-title">
                 <p>下記、選択がない場合は全てのレシピから検索されます。</p>
-                <input type="radio" name="from" value="partner">パートナーのレシピから<input type="radio" name="from" value="plusB">パートナー＋ブックマークのレシピから<br>
+                <input type="radio" name="from" value="fromPartner">パートナーのレシピから<input type="radio" name="from" value="plusB">パートナー＋ブックマークのレシピから<br>
             </div>
             <div class="mainSearch">
                 <label for="word">
