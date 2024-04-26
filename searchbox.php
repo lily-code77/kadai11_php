@@ -142,20 +142,19 @@ $recipe_json = json_encode($recipes, JSON_UNESCAPED_UNICODE);
                 "作り方：" +
                 recipeArr[i]['ins'] +
                 '</p>' +
-                '<p class="memo">' +
-                "レシピ背景：" +
-                recipeArr[i]['episode'] +
-                '</p>' +
                 '</details>' +
                 '<p class="keywords">' +
                 recipeArr[i]['keywords'] +
                 '</p>' +
                 '<form action="thankYou.php" method="post">' +
+                '<input type="hidden" name="recipe_id" value="2" />' +
                 '<input type="checkbox" name="thankYou" value="thankYou">' +
                 '<label for="thankYou">ごちそうさまです</label>' +
                 '<br>' +
                 '<input type="checkbox" name="bookmark" value="bookmark">' +
                 '<label for="bookmark">ブックマーク</label>' +
+                '<button class="b" type="submit">送信</button>' +
+                '</form>' +
                 '</li>';
 
             $('.results').append(output);
