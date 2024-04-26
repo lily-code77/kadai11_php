@@ -21,7 +21,7 @@ if (!isset($_POST['word'])) {
     exit();
 }
 
-// $_POST['pWord']で入力値を取得 文字前後の空白除去&エスケープ処理
+// $_POST['word']で入力値を取得 文字前後の空白除去&エスケープ処理
 $word = trim(htmlspecialchars($_POST['word'], ENT_QUOTES));
 // 文字列の中の「　」(全角空白)を「」(何もなし)に変換
 $word = str_replace("　", "", $word);
@@ -65,17 +65,19 @@ if ($status == false) {
 // 全データ取得
 $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // var_dump($recipes);
+// JSONに値を渡す
+$recipe_json = json_encode($recipes, JSON_UNESCAPED_UNICODE);
 
 // partnerのprofile_id(=user_id partnerテーブルでprofile_idと命名したのが誤解を招いてしまっている)を引っ張ってくる
-$sql = "SELECT profile_id FROM partners WHERE user_id=$login_user[id]";
-$stmt = $pdo->prepare($sql);
-$status = $stmt->execute();
+// $sql = "SELECT profile_id FROM partners WHERE user_id=$login_user[id]";
+// $stmt = $pdo->prepare($sql);
+// $status = $stmt->execute();
 
-if ($status == false) {
-    sql_error($stmt);
-}
+// if ($status == false) {
+//     sql_error($stmt);
+// }
 
-$partners_id = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// $partners_id = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -85,16 +87,60 @@ $partners_id = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/searchbox.css">
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <title>レシピ検索の結果</title>
 </head>
 
 <body>
     <h3>検索結果</h3>
-    <div>
-        <?php foreach ($recipes as $recipe) { ?>
-            <p><?php echo "{$recipe['recipe_name']}"; ?></p>
-        <?php } ?>
-    </div>
+    <ul class="results"></ul>
+
+    <script>
+        //JSON受け取り
+        $rec_recipe_json = '<?= $recipe_json ?>';
+        const recipeArr = JSON.parse($rec_recipe_json);
+        console.log(recipeArr);
+
+        for (let i = 0; i < recipeArr.length; i++) {
+            const output =
+                '<li class="list">' +
+                '<p class="img">' +
+                '<img src="' + recipeArr[i]['file_path'] + '" width="300px">' +
+                '<details>' +
+                '<summary class="title">' +
+                recipeArr[i]['recipe_name'] +
+                '<br>' +
+                recipeArr[i]['genre'] +
+                '<br>' +
+                recipeArr[i]['preference'] +
+                '<br>' +
+                "調理時間：" +
+                recipeArr[i]['cooking_time'] +
+                '</summary>' +
+                '<p class="ing">' +
+                "材料：" +
+                recipeArr[i]['ing'] +
+                '</p>' +
+                '<p class="ins">' +
+                "作り方：" +
+                recipeArr[i]['ins'] +
+                '</p>' +
+                '<p class="memo">' +
+                "レシピ背景：" +
+                recipeArr[i]['episode'] +
+                '</p>' +
+                '</details>' +
+                '<p class="keywords">' +
+                recipeArr[i]['keywords'] +
+                '</p>' +
+                '</li>';
+
+            $('.results').append(output);
+        }
+    </script>
 
 </body>
 
