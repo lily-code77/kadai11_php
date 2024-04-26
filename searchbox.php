@@ -64,21 +64,32 @@ if ($status == false) {
 
 // 全データ取得
 $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-// var_dump($recipes);
-// JSONに値を渡す
-$recipe_json = json_encode($recipes, JSON_UNESCAPED_UNICODE);
 
 // partnerのprofile_id(=user_id partnerテーブルでprofile_idと命名したのが誤解を招いてしまっている)を引っ張ってくる
-// $sql = "SELECT profile_id FROM partners WHERE user_id=$login_user[id]";
-// $stmt = $pdo->prepare($sql);
-// $status = $stmt->execute();
+$sql = "SELECT user_id, name FROM profiles";
+$stmt = $pdo->prepare($sql);
+$status = $stmt->execute();
 
-// if ($status == false) {
-//     sql_error($stmt);
-// }
+if ($status == false) {
+    sql_error($stmt);
+}
 
-// $partners_id = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$producer_names = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// var_dump($producer_names);
 
+foreach ($recipes as $recipe) {
+    foreach ($producer_names as $producer_name) {
+        if ($recipe['user_id'] == $producer_name['user_id']) {
+            $recipe['madeBy'] = $producer_name["name"];
+        }
+    }
+}
+// var_dump($recipe);
+// ↓で消える。（理由がわからない）
+// var_dump($recipes);
+
+// JSONに値を渡す
+$recipe_json = json_encode($recipes, JSON_UNESCAPED_UNICODE);
 ?>
 
 <!DOCTYPE html>
@@ -113,6 +124,9 @@ $recipe_json = json_encode($recipes, JSON_UNESCAPED_UNICODE);
                 '<summary class="title">' +
                 recipeArr[i]['recipe_name'] +
                 '<br>' +
+                'By :' +
+                recipeArr[i]['madeBy'] +
+                '<br>' +
                 recipeArr[i]['genre'] +
                 '<br>' +
                 recipeArr[i]['preference'] +
@@ -136,6 +150,12 @@ $recipe_json = json_encode($recipes, JSON_UNESCAPED_UNICODE);
                 '<p class="keywords">' +
                 recipeArr[i]['keywords'] +
                 '</p>' +
+                '<form action="thankYou.php" method="post">' +
+                '<input type="checkbox" name="thankYou" value="thankYou">' +
+                '<label for="thankYou">ごちそうさまです</label>' +
+                '<br>' +
+                '<input type="checkbox" name="bookmark" value="bookmark">' +
+                '<label for="bookmark">ブックマーク</label>' +
                 '</li>';
 
             $('.results').append(output);
