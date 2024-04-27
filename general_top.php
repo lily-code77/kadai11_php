@@ -58,6 +58,37 @@ if ($status == false) {
 
 $partner_descripts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // var_dump($partner_descripts);
+
+// 「ごちそうさま」を表示する
+$sql = "SELECT * FROM recipes
+        JOIN thankyous
+        ON recipes.id = thankyous.recipe_id;";
+$stmt = $pdo->prepare($sql);
+$status = $stmt->execute();
+
+if ($status == false) {
+    sql_error($stmt);
+}
+
+$thk_recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// var_dump($thk_recipes);
+
+//  レシピの作者を引っ張ってくる
+$sql = "SELECT recipes.id, profiles.name 
+        FROM profiles JOIN recipes
+        ON profiles.user_id = recipes.user_id";
+$stmt = $pdo->prepare($sql);
+$status = $stmt->execute();
+
+if ($status == false) {
+    sql_error($stmt);
+}
+
+$producer_names = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// JSONに値を渡す
+$thk_recipes_json = json_encode($thk_recipes, JSON_UNESCAPED_UNICODE);
+$proName_json = json_encode($producer_names, JSON_UNESCAPED_UNICODE);
 ?>
 
 <!DOCTYPE html>
@@ -66,6 +97,10 @@ $partner_descripts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/general_top.css">
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <title>紡くっく | トップページ</title>
 </head>
 
@@ -166,7 +201,7 @@ $partner_descripts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <h2>ごちそうさまでした</h2>
     <!-- 自分が作った料理の写真とコメントを表示 -->
-    <div class="messages"></div>
+    <ul class="messages"></ul>
 
     <h2>ブックマーク</h2>
     <!-- 自分がブックマークしているレシピ -->
@@ -176,7 +211,52 @@ $partner_descripts = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- パートナーの記事一覧をTwitter風に見れる（いいね機能とブックマーク機能） -->
     <div class="posts"></div>
 
+    <script>
+        // 「ごちそうさま」
+        //JSON受け取り
+        $rec_thkRecipes_json = '<?= $thk_recipes_json ?>';
+        const thkRecipeArr = JSON.parse($rec_thkRecipes_json);
+        console.log({
+            thkRecipeArr
+        });
 
+        $rec_proName_json = '<?= $proName_json ?>';
+        const proNameArr = JSON.parse($rec_proName_json);
+        console.log({
+            proNameArr
+        });
+
+        for (const recipe of thkRecipeArr) {
+            for (const proName of proNameArr) {
+                // console.log({proName});
+                // console.log(typeof proName);
+                if (proName.id == recipe.id) {
+                    // console.log(proName['id']);
+                    recipe.madeBy = proName['name'];
+                    // console.log({recipe});
+                }
+            }
+        }
+        console.log({
+            thkRecipeArr
+        });
+
+        for (let i = 0; i < thkRecipeArr.length; i++) {
+            const output =
+                '<li class="list">' +
+                '<p class="img">' +
+                '<img src="' + thkRecipeArr[i]['file_path'] + '" width="300px">' +
+                '<details>' +
+                '<summary class="title">' +
+                thkRecipeArr[i]['recipe_name'] +
+                '<br>' +
+                'By :' +
+                thkRecipeArr[i]['madeBy'] +
+                '</li>';
+
+            $('.messages').append(output);
+        }
+    </script>
 
 </body>
 

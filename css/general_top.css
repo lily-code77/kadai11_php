@@ -1,0 +1,26 @@
+body {
+    margin: 50px;
+}
+
+/* ポラロイド風 */
+ul.messages {
+    list-style: none;
+    max-width: 960px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+
+.list {
+    min-height: 300px;
+    background: #fff;
+    padding: 1.5rem 1rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+div.img {
+    width: 100%;
+    height: 154px;
+}

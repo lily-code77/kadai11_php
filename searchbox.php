@@ -77,18 +77,7 @@ if ($status == false) {
 }
 
 $producer_names = $stmt->fetchAll(PDO::FETCH_ASSOC);
-var_dump($producer_names);
-
-foreach ($recipes as $recipe) {
-    foreach ($producer_names as $producer_name) {
-        if ($recipe['user_id'] == $producer_name['user_id']) {
-            $recipe['madeBy'] = $producer_name["name"];
-        }
-    }
-}
-// var_dump($recipe);
-// ↓で消える。（理由がわからない）
-// var_dump($recipes);
+// var_dump($producer_names);
 
 // JSONに値を渡す
 $recipe_json = json_encode($recipes, JSON_UNESCAPED_UNICODE);
