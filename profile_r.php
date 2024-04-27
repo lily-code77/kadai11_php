@@ -36,7 +36,7 @@ $login_user = $_SESSION['login_user'];
         <a href="general_top.php"><img src="./hp_img/logo.png" alt="紡くっくのロゴ"></a>
     </h1>
     <p>You are：<?php echo h($login_user['name']) ?></p>
-    <form action="logout.php" method="POST">
+    <form class="logout" action="logout.php" method="POST">
         <input class="b" type="submit" name="logout" value="ログアウト">
     </form>
     <h1>プロフィールを登録する</h1>

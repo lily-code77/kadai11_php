@@ -42,6 +42,10 @@ li {
     margin-bottom: 50px;
 }
 
+.logout {
+    margin-left: 80%;
+}
+
 /*
 疑似要素を使って下線を引く
 */

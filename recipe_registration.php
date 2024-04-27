@@ -22,7 +22,7 @@ $login_user = $_SESSION['login_user'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+    <!-- <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css"> -->
     <link rel="stylesheet" href="css/style.css">
 
     <!-- Google Font -->
@@ -35,9 +35,9 @@ $login_user = $_SESSION['login_user'];
 
 <body>
     <h1 class="logo">
-        <a href="general_top.php"><img src="" alt="紡くっくのロゴ"></a>
+        <a href="general_top.php"><img src="./hp_img/logo.png" alt="紡くっくのロゴ"></a>
     </h1>
-    <form action="logout.php" method="POST">
+    <form class="logout" action="logout.php" method="POST">
         <input class="b" type="submit" name="logout" value="ログアウト">
     </form>
     <h1>レシピを登録する</h1>

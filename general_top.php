@@ -120,13 +120,16 @@ $proName_json = json_encode($producer_names, JSON_UNESCAPED_UNICODE);
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho&display=swap" rel="stylesheet">
-    
+
     <title>紡くっく | トップページ</title>
 </head>
 
 <body>
     <h1>マイページ</h1>
     <p>You are：<?php echo h($login_user['name']) ?></p>
+    <form class="logout" action="logout.php" method="POST">
+        <input class="b" type="submit" name="logout" value="ログアウト">
+    </form>
 
     <h2>あなたの食卓パートナー</h2>
     <!-- パートナーの写真を表示 ＋　削除機能-->
