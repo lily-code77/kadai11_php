@@ -2,8 +2,66 @@ body {
     margin: 50px;
 }
 
+.selected_partner {
+    display: flex;
+    /* marxgin: 30px; */
+    /* padding: 30px; */
+}
+
+.partner {
+    margin: 30px;
+}
+
+.selected_partner img{
+    width: 300px;
+    border-radius: 50%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+    font-size: 35px;
+}
+
+p {
+    font-size: 20px;
+}
+
+div {
+    margin: 20px;
+}
+
+.mainSearch {
+    margin-top: 70px;
+}
+
+.label-title2 {
+    font-size: 20px;
+}
+
+.pSearch {
+    position: relative;
+    margin: 30px auto;
+    text-align: center;
+}
+
+.pSearch input[type="text"] {
+    text-align: center;
+    width: 45%;
+    padding: 15px;
+    font-size: 1.5rem;
+    border: transparent;
+    background-color: #e7e7e7;
+    border-radius: 5px;
+    border: solid 3px transparent;
+}
+
+#search {
+    margin-left: 95%;
+    padding: 10px 30px;
+}
+
 /* ポラロイド風 */
-ul.messages {
+ul.messages, .bookmarks {
     list-style: none;
     max-width: 960px;
     margin: 0 auto;

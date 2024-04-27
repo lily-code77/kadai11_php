@@ -94,6 +94,11 @@ $proName_json = json_encode($producer_names, JSON_UNESCAPED_UNICODE);
     <link rel="stylesheet" href="css/searchbox.css">
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho&display=swap" rel="stylesheet">
+
     <title>レシピ検索の結果</title>
 </head>
 

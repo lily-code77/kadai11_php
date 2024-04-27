@@ -73,6 +73,20 @@ if ($status == false) {
 $thk_recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // var_dump($thk_recipes);
 
+// 「ごちそうさま」を表示する
+$sql = "SELECT * FROM recipes
+        JOIN bookmarks
+        ON recipes.id = bookmarks.recipe_id;";
+$stmt = $pdo->prepare($sql);
+$status = $stmt->execute();
+
+if ($status == false) {
+    sql_error($stmt);
+}
+
+$bookmarks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// var_dump($bookmarks);
+
 //  レシピの作者を引っ張ってくる
 $sql = "SELECT recipes.id, profiles.name 
         FROM profiles JOIN recipes
@@ -88,6 +102,7 @@ $producer_names = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // JSONに値を渡す
 $thk_recipes_json = json_encode($thk_recipes, JSON_UNESCAPED_UNICODE);
+$bookmarks_json = json_encode($bookmarks, JSON_UNESCAPED_UNICODE);
 $proName_json = json_encode($producer_names, JSON_UNESCAPED_UNICODE);
 ?>
 
@@ -101,6 +116,11 @@ $proName_json = json_encode($producer_names, JSON_UNESCAPED_UNICODE);
     <link rel="stylesheet" href="css/general_top.css">
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho&display=swap" rel="stylesheet">
+    
     <title>紡くっく | トップページ</title>
 </head>
 
@@ -112,14 +132,17 @@ $proName_json = json_encode($producer_names, JSON_UNESCAPED_UNICODE);
     <!-- パートナーの写真を表示 ＋　削除機能-->
     <div class="selected_partner">
         <?php foreach ($partner_descripts as $partner_descript) { ?>
-            <?php foreach ($partner_photos as $partner_photo) { ?>
-                <?php if ($partner_descript['user_id'] == $partner_photo['id']) : ?>
-                    <img src="<?php echo "{$partner_photo['file_path']}"; ?>" alt="パートナーのアイコン">
-                <?php endif; ?>
-            <?php } ?>
-
-            <p><?php echo "{$partner_descript['name']}" ?></p>
-            <p><?php echo "{$partner_descript['keywords']}" ?></p>
+            <div class="partner">
+                <?php foreach ($partner_photos as $partner_photo) { ?>
+                    <?php if ($partner_descript['user_id'] == $partner_photo['id']) : ?>
+                        <img src="<?php echo "{$partner_photo['file_path']}"; ?>" alt="パートナーのアイコン">
+                    <?php endif; ?>
+                <?php } ?>
+                <ul>
+                    <li><?php echo "{$partner_descript['name']}" ?></li>
+                    <li><?php echo "{$partner_descript['keywords']}" ?></li>
+                </ul>
+            </div>
         <?php } ?>
     </div>
 
@@ -136,7 +159,7 @@ $proName_json = json_encode($producer_names, JSON_UNESCAPED_UNICODE);
     <h2>レシピ検索</h2>
     <section id="searchbox">
         <form method="post" action="searchbox.php">
-            <div class="label-title">
+            <div class="label-title2">
                 <p>下記、選択がない場合は全てのレシピから検索されます。</p>
                 <input type="radio" name="from" value="fromPartner">パートナーのレシピから<input type="radio" name="from" value="plusB">パートナー＋ブックマークのレシピから<br>
             </div>
@@ -167,7 +190,7 @@ $proName_json = json_encode($producer_names, JSON_UNESCAPED_UNICODE);
                         <div class="label-title">
                             <p>こだわり</p>
                         </div>
-                        <select name="preference" id="preference-select">
+                        <select class="s" name="preference" id="preference-select">
                             <option value="">選択しない</option>
                             <option value="米粉">米粉</option>
                             <option value="発酵調味料">発酵調味料</option>
@@ -205,7 +228,7 @@ $proName_json = json_encode($producer_names, JSON_UNESCAPED_UNICODE);
 
     <h2>ブックマーク</h2>
     <!-- 自分がブックマークしているレシピ -->
-    <div class="bookmarks"></div>
+    <ul class="bookmarks"></ul>
 
     <h2>記事一覧</h2>
     <!-- パートナーの記事一覧をTwitter風に見れる（いいね機能とブックマーク機能） -->
@@ -246,7 +269,6 @@ $proName_json = json_encode($producer_names, JSON_UNESCAPED_UNICODE);
                 '<li class="list">' +
                 '<p class="img">' +
                 '<img src="' + thkRecipeArr[i]['file_path'] + '" width="300px">' +
-                '<details>' +
                 '<summary class="title">' +
                 thkRecipeArr[i]['recipe_name'] +
                 '<br>' +
@@ -255,6 +277,44 @@ $proName_json = json_encode($producer_names, JSON_UNESCAPED_UNICODE);
                 '</li>';
 
             $('.messages').append(output);
+        }
+
+        // 「ブックマーク」
+        //JSON受け取り
+        $rec_bookmarks_json = '<?= $bookmarks_json ?>';
+        const bookmarksArr = JSON.parse($rec_bookmarks_json);
+        console.log({
+            bookmarksArr
+        });
+
+        for (const recipe of bookmarksArr) {
+            for (const proName of proNameArr) {
+                // console.log({proName});
+                // console.log(typeof proName);
+                if (proName.id == recipe.id) {
+                    // console.log(proName['id']);
+                    recipe.madeBy = proName['name'];
+                    // console.log({recipe});
+                }
+            }
+        }
+        console.log({
+            bookmarksArr
+        });
+
+        for (let i = 0; i < bookmarksArr.length; i++) {
+            const output =
+                '<li class="list">' +
+                '<p class="img">' +
+                '<img src="' + bookmarksArr[i]['file_path'] + '" width="300px">' +
+                '<summary class="title">' +
+                bookmarksArr[i]['recipe_name'] +
+                '<br>' +
+                'By :' +
+                bookmarksArr[i]['madeBy'] +
+                '</li>';
+
+            $('.bookmarks').append(output);
         }
     </script>
 

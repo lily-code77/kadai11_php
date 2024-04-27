@@ -44,46 +44,46 @@ $save_filename = date('YmdHis') . $filename;
 $err_msgs      = array();
 $save_path     = $upload_dir . $save_filename;
 
-    // ファイルのバリデーション
-    // ファイルのサイズが1MG未満か
-    if ($filesize > 1048576 || $file_err == 2) {
-        array_push($err_msgs, 'ファイルサイズは1MB未満にしてください。');
-    }
+// ファイルのバリデーション
+// ファイルのサイズが1MG未満か
+if ($filesize > 1048576 || $file_err == 2) {
+    array_push($err_msgs, 'ファイルサイズは1MB未満にしてください。');
+}
 
-    // 拡張は画像形式か
-    $allow_ext = array('jpg', 'jpeg', 'png');
-    $file_ext = pathinfo($filename, PATHINFO_EXTENSION);
+// 拡張は画像形式か
+$allow_ext = array('jpg', 'jpeg', 'png');
+$file_ext = pathinfo($filename, PATHINFO_EXTENSION);
 
-    if (!in_array(strtolower($file_ext), $allow_ext)) {
-        array_push($err_msgs, '画像ファイルを添付してください。');
-    }
+if (!in_array(strtolower($file_ext), $allow_ext)) {
+    array_push($err_msgs, '画像ファイルを添付してください。');
+}
 
-    if (count($err_msgs) === 0) {
-        // ファイルはあるかどうか？
-        if (is_uploaded_file($tmp_path)) {
-            if (move_uploaded_file($tmp_path, $save_path)) {
-                echo $filename . 'を' . $upload_dir . 'をアップしました。';
-                //DBに保存（ファイル名、ファイルパス、キャプション）
-                // $result = fileSave($login_user, $recipe_name, $filename, $save_path, $ingredients, $instructions, $episode);
+if (count($err_msgs) === 0) {
+    // ファイルはあるかどうか？
+    if (is_uploaded_file($tmp_path)) {
+        if (move_uploaded_file($tmp_path, $save_path)) {
+            echo $filename . 'を' . $upload_dir . 'をアップしました。';
+            //DBに保存（ファイル名、ファイルパス、キャプション）
+            // $result = fileSave($login_user, $recipe_name, $filename, $save_path, $ingredients, $instructions, $episode);
 
-                // if ($result) {
-                //     echo 'データベースに保存しました！';
-                // } else {
-                //     echo 'データベースへの保存が失敗しました！';
-                // }
-            } else {
-                echo 'ファイルが保存できませんでした。';
-            }
+            // if ($result) {
+            //     echo 'データベースに保存しました！';
+            // } else {
+            //     echo 'データベースへの保存が失敗しました！';
+            // }
         } else {
-            echo 'ファイルが選択されていません。';
-            echo '<br>';
+            echo 'ファイルが保存できませんでした。';
         }
     } else {
-        foreach ($err_msgs as $msg) {
-            echo $msg;
-            echo '<br>';
-        }
+        echo 'ファイルが選択されていません。';
+        echo '<br>';
     }
+} else {
+    foreach ($err_msgs as $msg) {
+        echo $msg;
+        echo '<br>';
+    }
+}
 
 
 if (count($err) === 0) {
@@ -104,6 +104,13 @@ if (count($err) === 0) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho&display=swap" rel="stylesheet">
+
     <title>紡くっく | ユーザー登録完了画面</title>
 </head>
 

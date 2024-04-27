@@ -28,8 +28,15 @@ session_destroy();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho&display=swap" rel="stylesheet">
+
     <title>紡くっく | ログイン画面</title>
 </head>
+
 
 <body>
     <h2>ログインフォーム</h2>
@@ -55,7 +62,7 @@ session_destroy();
     <input type="submit" value="ログイン">
 </p>
     </form>
-    <a href="signup_form.php">新規登録はこちら</a>
+    <a href="signup_form.php">新規登録はこちら</a><br>
     <a href="index.php">戻る</a>
 </body>
 

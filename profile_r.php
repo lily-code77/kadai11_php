@@ -22,12 +22,18 @@ $login_user = $_SESSION['login_user'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho&display=swap" rel="stylesheet">
+
     <title>紡くっく人 | レシピ登録</title>
 </head>
 
 <body>
     <h1 class="logo">
-        <a href="general_top.php"><img src="" alt="紡くっくのロゴ"></a>
+        <a href="general_top.php"><img src="./hp_img/logo.png" alt="紡くっくのロゴ"></a>
     </h1>
     <p>You are：<?php echo h($login_user['name']) ?></p>
     <form action="logout.php" method="POST">

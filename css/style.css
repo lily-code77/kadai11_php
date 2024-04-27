@@ -2,6 +2,7 @@
 
 html {
     font-size: 100%;
+    font-family: 'Zen Old Mincho';
 }
 
 body {
@@ -131,9 +132,10 @@ Searchbox
 }
 
 #searchbox input[type="text"] {
+    text-align: center;
     width: 45%;
     padding: 15px;
-    font-size: 2.0rem;
+    font-size: 1.5rem;
     border: transparent;
     background-color: #e7e7e7;
     border-radius: 5px;
@@ -275,7 +277,6 @@ Business
 
 #business .flex .left {
     width: 46%;
-    margin-top: 100px;
 }
 
 #business .flex .right {
@@ -325,7 +326,7 @@ Company
 }
 
 #company .text {
-    width: 55%;
+    width: 100%;
     background-color: #fff;
     padding: 100px 8% 100px 6%;
     position: absolute;
@@ -334,10 +335,10 @@ Company
 }
 
 #company .img {
-    width: 53%;
+    width: 43%;
     position: absolute;
-    top: 115px;
-    right: 0;
+    top: 100px;
+    right: 30px;
 }
 
 #company .img img {
