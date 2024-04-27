@@ -27,7 +27,7 @@ if ($dataArr['thankyou']) {
     $result = FALSE;
 
     $sql = "INSERT INTO thankyous
-        (recipe_id, user_id)
+        (user_id, recipe_id)
         VALUE
         (?, ?)";
 
@@ -52,7 +52,7 @@ if ($dataArr['bookmark']) {
     $result = FALSE;
 
     $sql = "INSERT INTO bookmarks
-        (recipe_id, user_id)
+        (user_id, recipe_id)
         VALUE
         (?, ?)";
 
