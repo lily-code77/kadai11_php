@@ -6,7 +6,7 @@ require_once './classes/UserLogic.php';
 
 $login_user = $_SESSION['login_user'];
 
-// var_dump($_POST);
+var_dump($_POST);
 $thankYou = $_POST['thankYou'];
 $bookmark = $_POST['bookmark'];
 // recipe_idの取得が必要

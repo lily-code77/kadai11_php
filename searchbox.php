@@ -66,7 +66,9 @@ if ($status == false) {
 $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // partnerのprofile_id(=user_id partnerテーブルでprofile_idと命名したのが誤解を招いてしまっている)を引っ張ってくる
-$sql = "SELECT user_id, name FROM profiles";
+$sql = "SELECT recipes.id, profiles.name 
+        FROM profiles JOIN recipes
+        ON profiles.user_id = recipes.user_id";
 $stmt = $pdo->prepare($sql);
 $status = $stmt->execute();
 
@@ -75,7 +77,7 @@ if ($status == false) {
 }
 
 $producer_names = $stmt->fetchAll(PDO::FETCH_ASSOC);
-// var_dump($producer_names);
+var_dump($producer_names);
 
 foreach ($recipes as $recipe) {
     foreach ($producer_names as $producer_name) {
@@ -90,6 +92,7 @@ foreach ($recipes as $recipe) {
 
 // JSONに値を渡す
 $recipe_json = json_encode($recipes, JSON_UNESCAPED_UNICODE);
+$proName_json = json_encode($producer_names, JSON_UNESCAPED_UNICODE);
 ?>
 
 <!DOCTYPE html>
@@ -113,7 +116,30 @@ $recipe_json = json_encode($recipes, JSON_UNESCAPED_UNICODE);
         //JSON受け取り
         $rec_recipe_json = '<?= $recipe_json ?>';
         const recipeArr = JSON.parse($rec_recipe_json);
-        console.log(recipeArr);
+        // console.log({recipeArr});
+
+        $rec_proName_json = '<?= $proName_json ?>';
+        const proNameArr = JSON.parse($rec_proName_json);
+        // console.log({proNameArr});
+
+        // console.log(typeof recipeArr);
+        // console.log(typeof proNameArr);
+
+        // recipeArrにmadeByのkey＆valueを入れる
+        for (const recipe of recipeArr) {
+            for (const proName of proNameArr) {
+                // console.log({proName});
+                // console.log(typeof proName);
+                // console.log(proName['id']);
+                if (proName.id == recipe.id) {
+                    recipe.madeBy = proName['name'];
+                    // console.log({recipe});
+                }
+            }
+        }
+        console.log({
+            recipeArr
+        });
 
         for (let i = 0; i < recipeArr.length; i++) {
             const output =
@@ -147,7 +173,7 @@ $recipe_json = json_encode($recipes, JSON_UNESCAPED_UNICODE);
                 recipeArr[i]['keywords'] +
                 '</p>' +
                 '<form action="thankYou.php" method="post">' +
-                '<input type="hidden" name="recipe_id" value="2" />' +
+                '<input type="hidden" name="recipe_id" value="' + recipeArr[i]['id'] + '" />' +
                 '<input type="checkbox" name="thankYou" value="thankYou">' +
                 '<label for="thankYou">ごちそうさまです</label>' +
                 '<br>' +
